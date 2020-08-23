@@ -1,0 +1,22 @@
+syntax = "proto3";
+option go_package = "github.com/rafaelturon/ledgerd/pb";
+
+package pb;
+
+message AccountCreateCommand {
+    string account_id = 1;
+    string customer_id = 2;
+    string status = 3;
+    int64 created_on = 4; // Date stores as unix int64 value
+
+    message AccountItem {
+        string code = 1;
+        string name = 2;
+    }
+}
+
+message AccountNameChangedCommand {
+    string account_id = 1;
+    string customer_id = 2;
+    string name = 3;
+}
