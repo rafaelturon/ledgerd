@@ -37,9 +37,10 @@ func (gc grpcClient) createAccount(account pb.AccountCreateCommand) error {
 	defer conn.Close()
 	client := pb.NewEventStoreClient(conn)
 	accountJSON, _ := json.Marshal(account)
+	u, err := uuid.NewV4()
 
 	event := &pb.Event{
-		EventId:       uuid.NewV4().String(),
+		EventId:       u.String(),
 		EventType:     event,
 		AggregateId:   account.AccountId,
 		AggregateType: aggregate,
@@ -68,7 +69,8 @@ func (h accountHandler) createAccount(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid Account Data", 500)
 		return
 	}
-	aggregateID := uuid.NewV4().String()
+	u, err := uuid.NewV4()
+	aggregateID := u.String()
 	account.AccountId = aggregateID
 	account.Status = "Pending"
 	account.CreatedOn = time.Now().Unix()
